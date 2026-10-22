@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Coffeebreak One-Tap Phone</title>
+<meta name="theme-color" content="#000"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="One-Tap"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.png"><link rel="apple-touch-icon" href="icon.png"><link rel="stylesheet" href="common.css"><script>window.CB_NOQR=1</script><script src="peerjs.min.js"></script><script src="core.js"></script>
+<style>#contacts{display:grid;gap:12px}.c{font-size:2rem;padding:24px 10px}#incall,#ring,#help,#add{position:fixed;inset:0;background:#000;padding:20px;display:flex;flex-direction:column;gap:18px;justify-content:center;z-index:9}</style></head><body>
+<header><img src="logo.png" alt="Coffeebreak logo"><h1>One-Tap Phone</h1></header>
+<p class="note">Calls over WiFi between Coffeebreak app users. Not a mobile phone number.</p>
+<p class="status off" id="st" role="status" aria-live="polite">Reconnecting…</p>
+<p class="sync" id="sync" aria-live="polite"></p>
+<p class="status on hide" id="pairst" role="status" aria-live="assertive"></p>
+<div class="two"><button id="conb" class="big blue small" aria-label="Connect a phone">Connect a phone</button><button id="codeb" class="big grey small hide" aria-label="Enter a code">Enter a code</button></div>
+<div id="contacts" aria-label="Contacts"></div>
+<button id="call" class="big green" aria-label="Call">Call</button>
+<button id="pause" class="big grey small" aria-pressed="false" aria-label="Pause calls">Pause calls</button>
+<button id="helpb" class="big red" style="font-size:2.6rem" aria-label="Help">Help</button>
+<div class="qrbox"><p class="note">My call ID<br><b id="me" style="font-size:1.5rem"></b></p></div>
+<button id="share" class="big grey" style="font-size:1.5rem;padding:16px" aria-label="Share my call ID">Share my call ID</button>
+<section id="book" aria-label="Phone book" style="border:3px solid #4dd2ff;border-radius:20px;padding:10px">
+<h2 style="margin:0 0 8px;font-size:1.8rem;color:#4dd2ff;text-align:center">Phone Book</h2>
+<div id="rows"></div>
+<div class="two"><button id="bookadd" class="big grey small">Add someone</button><button id="bookimp" class="big grey small hide">Import from my phone</button></div>
+<p class="note" style="font-size:1rem;color:#bbb">People who call you, people you call and people who scan your code are saved here by themselves.</p></section>
+<p class="note" id="lastcall" style="font-size:1.1rem;color:#ccc"></p>
+<button id="linkb" class="big grey small" aria-label="Link another device">Link another device</button>
+<button id="testb" class="big grey small" aria-label="Test my connection">Test my connection</button>
+<p id="err" class="note" role="alert" style="color:#ff8080"></p>
+<section id="add" class="hide" aria-label="Add a contact"><p class="num" style="color:#ffd84d">Who do you want to call</p>
+<label class="note" for="anum">Their Coffeebreak call ID</label><input id="anum" inputmode="text" placeholder="CB-1234-5678" style="font-size:2rem;padding:16px;border-radius:16px">
+<label class="note" for="aname">Their name</label><input id="aname" style="font-size:2rem;padding:16px;border-radius:16px">
+<button id="asave" class="big green">Save and call</button><button id="acancel" class="big grey">Back</button></section>
+<section id="ring" class="hide" aria-live="assertive"><p class="num" id="rwho">Someone is calling</p><button id="ans" class="big green" style="padding:60px 10px">Answer</button><button id="dec" class="big red">Decline</button></section>
+<section id="incall" class="hide" aria-live="assertive"><p class="num" id="cwho">Calling…</p><p class="note" id="ctime"></p><button id="tapsound" class="big blue small hide" aria-label="Tap if you cannot hear them">Tap if you cannot hear them</button><button id="mute" class="big grey" aria-pressed="false" aria-label="Mute my microphone">Mute</button><button id="hang" class="big red" style="padding:60px 10px">Hang up</button><audio id="aud" autoplay playsinline webkit-playsinline></audio></section>
+<section id="help" class="hide" aria-live="assertive"><p class="num" style="color:#ff6b6b">Help</p>
+<p class="note">For an emergency, tap below. It opens your phone's dialler with 000 ready. You press call.</p>
+<a id="tel" class="big red" style="text-align:center;text-decoration:none" href="tel:000" aria-label="Open dialler with triple zero">Emergency 000</a>
+<button id="hfam" class="big green" aria-label="Call my first contact over WiFi">Call my first contact</button>
+<button id="hback" class="big grey">Back</button></section>
+<section id="linkov" class="ov hide" aria-label="Link another device"><p class="num" style="color:#ffd84d;font-size:2rem">Link another device</p>
+<p class="note">On your other phone, tablet or computer, open the link. Contacts, names and recent calls then stay the same on both, and calls ring on every linked device.</p>
+<div id="lqr" style="word-break:break-all;font-size:1rem;color:#9fd"></div>
+<button id="lshare" class="big blue small">Send the link</button><button id="lback" class="big grey small">Back</button></section>
+<section id="testov" class="ov hide" aria-live="polite"><p class="num" style="color:#ffd84d;font-size:2rem">Test my connection</p><p class="note" id="testres">Testing…</p><button id="tback" class="big grey small">Back</button></section>
+<section id="conov" class="full hide" aria-label="Connect a phone"><p class="num" style="color:#ffd84d;font-size:2.2rem;margin:0">Connect a phone</p>
+<div id="ccodewrap" class="hide"><p class="note">On the other phone tap Enter a code and type</p><p id="ccode" class="num" style="font-size:4.4rem;letter-spacing:10px;color:#fff" aria-live="polite">…</p></div>
+<p class="status on hide" id="cstat" aria-live="assertive"></p><button id="cclose" class="big grey small">Close</button></section>
+<section id="codeov" class="full hide" aria-label="Enter a code"><p class="num" style="color:#ffd84d;font-size:2rem;margin:0">Enter a code</p><p id="codev" class="num" style="font-size:3.6rem;letter-spacing:8px;min-height:1.2em" aria-live="polite"></p>
+<div id="pad" class="pad"></div><button id="codego" class="big green">Connect</button><p class="status on hide" id="codestat" aria-live="assertive"></p><button id="codeclose" class="big grey small">Close</button></section>
+<footer>© Karen O'Brien (Coffeebreak). All designs, music, art and content remain the property of Karen O'Brien. Your purchase gives you a personal-use licence only. It doesn't transfer ownership or allow resale, copying or redistribution.</footer>
+<script src="extras.js"></script><script src="phone.js"></script></body></html>
