@@ -100,7 +100,7 @@ window.onPair=(m,from)=>{checkVer(m.ver);const n=norm(m.num);if(!n||n===me)retur
  if(m.kind==='pairok'&&pairing){pairing=null;put('pairWith',null)}
  put('last',n);showPaired(name)};
 function pairLoop(){let tries=0;const step=()=>{if(!pairing)return;if(Date.now()-pairing.t>180000){pstat('pairst','Could not reach the other phone. Make sure it is open, then try again.','try');pairing=null;put('pairWith',null);return}
-  if(ready){const ok=pairing.code?sendCode(pairing.code):sendPair(pairing.n,'pair');tries++;const who=pairing.name||'the other phone';const txt=tries<=1?'Connecting to '+who:'Trying again';pstat('pairst',txt,tries<=1?'off':'try');if(pairing.code)pstat('codestat',txt,tries<=1?'off':'try')}
+  if(ready||(window.cbNet&&(cbNet.mqtt||cbNet.ntfy))){const ok=pairing.code?sendCode(pairing.code):sendPair(pairing.n,'pair');tries++;const who=pairing.name||'the other phone';const txt=tries<=1?'Connecting to '+who:'Trying again';pstat('pairst',txt,tries<=1?'off':'try');if(pairing.code)pstat('codestat',txt,tries<=1?'off':'try')}
   else pstat('pairst','Connecting','off');
   setTimeout(step,ready?2500:400)};step()}
 function startPairWith(n,name){if(!norm(n)||n===me)return;if(!S.contacts[n])setContact(n,name||'Coffeebreak friend');pairing={n,name,t:Date.now()};pairLoop()}
